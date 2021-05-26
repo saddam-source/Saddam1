@@ -5,9 +5,16 @@ metadata:
   namespace: kubernetes-dashboard
 spec:
   rules:
-  - host: dashboard.com
+  - host: "dashboard.com"
     http:
       paths:
-      - backend:
-          serviceName: kubernetes-dashboard
-          servicePort: 80
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: kubernetes-dashboard
+            port:
+              number: 80
+
+# if Nginx Ingress: service “ingress-nginx-controller-admission” not found; execute the below command
+# kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
