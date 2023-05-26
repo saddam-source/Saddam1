@@ -1,6 +1,6 @@
 ##### print full docker login command for aws ecr
 
-    aws ecr get-login
+    aws ecr get-login-password
 
 ##### login in docker private repo
 
